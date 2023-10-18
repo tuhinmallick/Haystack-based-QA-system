@@ -41,9 +41,7 @@ for filename in os.listdir("docs/"):
 
     if filename.endswith(".pdf") or filename.endswith(".PDF"):
         with fitz.open(os.path.abspath(os.path.join("docs/", filename))) as f:
-            text = ""
-            for page in f:
-                text += page.get_text()
+            text = "".join(page.get_text() for page in f)
         output_filename = re.sub("pdf", "txt", filename)
 
     if filename.endswith(".docx") or filename.endswith(".DOCX") or filename.endswith(".doc") or filename.endswith(".DOC"):
@@ -53,12 +51,8 @@ for filename in os.listdir("docs/"):
                 save_as_docx(path)
             clean_directory("docs/")
 
-        else:
-            pass
         doc = docx.Document(os.path.abspath(os.path.join("docs/", filename)))
-        fulltext = []
-        for para in doc.paragraphs:
-            fulltext.append(para.text)
+        fulltext = [para.text for para in doc.paragraphs]
         text = ''.join(fulltext)
         output_filename = re.sub("(docx?)", "txt", filename)
 
@@ -79,13 +73,11 @@ print("\nCOMPLETED...")
 print('*-'*25)
 t2=time.perf_counter()
 t=t2-t1
+print("-"*40)
 if file_count==1:
-    print("-"*40)
     print("\nProcessed ",file_count," document")
-    print("\nExecution Time: ",t,"seconds.\n")
-    print("-"*40)
 else:
-    print("-"*40)
     print("\nProcessed ",file_count," documents")
-    print("\nExecution Time: ",t,"seconds.\n")
-    print("-"*40)
+
+print("\nExecution Time: ",t,"seconds.\n")
+print("-"*40)

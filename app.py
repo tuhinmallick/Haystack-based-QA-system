@@ -20,8 +20,7 @@ def instantiate_model(question):
     document_store = SQLDocumentStore(url="sqlite:///qa.db")
     retriever = TfidfRetriever(document_store=document_store)
     pipe = ExtractiveQAPipeline(reader, retriever)
-    prediction = pipe.run(query=question, params=params)
-    return prediction
+    return pipe.run(query=question, params=params)
 
 st.image(main_image,use_column_width='auto')
 st.title("✨Question Answering system 📑")
